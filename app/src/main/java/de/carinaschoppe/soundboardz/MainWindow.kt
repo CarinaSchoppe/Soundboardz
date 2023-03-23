@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -82,13 +83,16 @@ class MainWindow : ComponentActivity() {
                 ) {
                     items(Util.unlockedPersons.size) { index ->
                         val person = Util.unlockedPersons.elementAt(index)
+                        val backgroundColor = Colors.colors[index % Colors.colors.size]
                         Button(
                             onClick = {
                                 val intent = Intent(this@MainWindow, PersonUI::class.java)
                                 Util.currentPerson = person
                                 startActivity(intent)
                             },
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(color = backgroundColor),
                         ) {
                             Text(text = person.name)
                         }
