@@ -11,23 +11,26 @@
 package de.carinaschoppe.soundboardz
 
 import android.content.Context
+import android.util.Log
 import java.io.File
 
 object PersonHandler {
 
 
-    fun loadPersonen(context: Context) {
+    fun loadPersons(context: Context) {
         val file: File = try {
-            File(context.filesDir, "personen.txt")
+            File(context.filesDir, "persons.txt")
+
         } catch (e: Exception) {
+            Log.d("Soundboardz Load", "Loaded Line: failed")
             return
         }
-        if (!file.exists()) {
-            return
-        }
+
+
         val persons = mutableSetOf<Person>()
         val lines = file.readLines()
         for (line in lines) {
+            Log.d("Soundboardz Load", "Loaded Line:$line")
             //check if the line is a person
             if (line.startsWith("Person:")) {
                 //create a new person
@@ -37,6 +40,7 @@ object PersonHandler {
                 val person = Persons.persons.find { it.name == name && it.passcode == passcode }
                 if (person != null) {
                     persons.add(person)
+                    Log.d("Soundboardz Load", "Loaded Person:${person.name}Passcode:${person.passcode}")
                 }
 
             }
@@ -47,11 +51,12 @@ object PersonHandler {
 
     }
 
-    fun savePersonen(context: Context) {
-        val file = File(context.filesDir, "personen.txt")
+    fun savePersons(context: Context) {
+        val file = File(context.filesDir, "persons.txt")
         file.writeText("")
         for (person in Persons.unlockedPersons) {
-            file.appendText("Person:${person.name}Passcode:${person.passcode}")
+            Log.d("Soundboardz Save", "Saved Person:${person.name}Passcode:${person.passcode}")
+            file.appendText("Person:${person.name}Passcode:${person.passcode}\n")
         }
     }
 }

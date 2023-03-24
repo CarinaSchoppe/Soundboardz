@@ -56,7 +56,7 @@ class PersonSelector : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
                     Persons.getPersonsFromFile(this)
-                    PersonHandler.loadPersonen(this)
+                    PersonHandler.loadPersons(this)
                     personScroller(this)
                 }
             }
@@ -105,7 +105,7 @@ class PersonSelector : ComponentActivity() {
                                     Log.d("SoundBoardz", "Wrong passcode: ${passcode.value}")
                                 }
                             }
-                            PersonHandler.savePersonen(context)
+                            PersonHandler.savePersons(context)
                             passcode.value = ""
                         }, modifier = Modifier
                             .background(Color.Green)
