@@ -96,6 +96,8 @@ class PersonSelector : ComponentActivity() {
                             } else if (passcode.value == "delete" || passcode.value == "clear") {
                                 //delete the persons.txt file
                                 PersonHandler.deletePersons(context)
+                                Log.d("SoundBoardz", "Deleted persons.txt")
+                                return@Button
                             } else {
                                 val unlocked = persons.firstOrNull { it.passcode == passcode.value }
                                 if (unlocked != null) {
