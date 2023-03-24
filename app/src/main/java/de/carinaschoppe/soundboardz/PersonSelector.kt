@@ -93,7 +93,6 @@ class PersonSelector : ComponentActivity() {
                                     Persons.unlockedPersons.add(person)
                                     Log.d("SoundBoardz", "Unlocked ${person.name}")
                                 }
-                                return@Button
                             } else {
                                 val unlocked = persons.firstOrNull { it.passcode == passcode.value }
                                 if (unlocked != null) {
