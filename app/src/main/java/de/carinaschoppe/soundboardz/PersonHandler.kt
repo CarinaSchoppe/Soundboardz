@@ -59,4 +59,9 @@ object PersonHandler {
             file.appendText("Person:${person.name}Passcode:${person.passcode}\n")
         }
     }
+
+    fun deletePersons(context: Context) {
+        val file = File(context.filesDir, "persons.txt")
+        file.writeText("")
+    }
 }
