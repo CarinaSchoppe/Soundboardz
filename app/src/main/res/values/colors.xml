@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright Notice for Soundboardz
+  ~ Copyright (c) at Carina Sophie Schoppe 2023
+  ~ File created on 3/24/23, 11:54 PM by Carina The Latest changes made by Carina on 3/23/23, 12:41 AM All contents of "colors.xml" are protected by copyright. The copyright law, unless expressly indicated otherwise, is
+  ~ at Carina Sophie Schoppe. All rights reserved
+  ~ Any type of duplication, distribution, rental, sale, award,
+  ~ Public accessibility or other use
+  ~ requires the express written consent of Carina Sophie Schoppe.
+  -->
+
 <resources>
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>

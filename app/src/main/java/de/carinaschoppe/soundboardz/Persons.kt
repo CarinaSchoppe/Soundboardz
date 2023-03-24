@@ -1,3 +1,13 @@
+/*
+ * Copyright Notice for Soundboardz
+ * Copyright (c) at Carina Sophie Schoppe 2023
+ * File created on 3/24/23, 11:54 PM by Carina The Latest changes made by Carina on 3/24/23, 11:18 PM All contents of "Persons.kt" are protected by copyright. The copyright law, unless expressly indicated otherwise, is
+ * at Carina Sophie Schoppe. All rights reserved
+ * Any type of duplication, distribution, rental, sale, award,
+ * Public accessibility or other use
+ * requires the express written consent of Carina Sophie Schoppe.
+ */
+
 package de.carinaschoppe.soundboardz
 
 import androidx.compose.runtime.mutableStateListOf
@@ -18,7 +28,10 @@ object Persons {
         ),
         Person(
             "Paul",
-            mutableSetOf(),
+            mutableSetOf(
+                AudioButton("Ehre", "ehre.wav"),
+                AudioButton("Erste Sahne", "erste-sahne.wav")
+            ),
             "j85g"
         ),
         Person(

@@ -1,11 +1,23 @@
+/*
+ * Copyright Notice for Soundboardz
+ * Copyright (c) at Carina Sophie Schoppe 2023
+ * File created on 3/24/23, 11:54 PM by Carina The Latest changes made by Carina on 3/24/23, 11:37 PM All contents of "PersonSelector.kt" are protected by copyright. The copyright law, unless expressly indicated otherwise, is
+ * at Carina Sophie Schoppe. All rights reserved
+ * Any type of duplication, distribution, rental, sale, award,
+ * Public accessibility or other use
+ * requires the express written consent of Carina Sophie Schoppe.
+ */
+
 package de.carinaschoppe.soundboardz
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
@@ -32,6 +44,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import de.carinaschoppe.soundboardz.ui.theme.SoundboardzTheme
@@ -68,7 +81,6 @@ class PersonSelector : ComponentActivity() {
                         onValueChange = { passcode.value = it },
                         label = { Text("Passcode") },
                         modifier = Modifier
-
                             .background(Color.White)
                     )
                     val showDialog = remember { mutableStateOf(false) }
@@ -98,7 +110,7 @@ class PersonSelector : ComponentActivity() {
                             passcode.value = ""
                         }, modifier = Modifier
                             .background(Color.Green)
-                            .width(100.dp)
+                            .fillMaxWidth()
                     ) {
                         Text(text = "Unlock")
                     }
@@ -141,7 +153,22 @@ class PersonSelector : ComponentActivity() {
                                     .fillMaxHeight()
                                     .background(backgroundColor)
                             ) {
-                                Text(text = person.name, fontSize = 45.sp)
+                                /*   Text(text = person.name, fontSize = 45.sp)*/
+                                val personFolderName = person.name.lowercase()
+                                val imageAssetPath = "$personFolderName/image.png"
+                                val imageBitmap = runCatching {
+                                    context.assets.open(imageAssetPath).use {
+                                        BitmapFactory.decodeStream(it)
+                                    }?.asImageBitmap()
+                                }.getOrElse {
+                                    // Use a fallback image if there is an exception
+                                    null
+                                }
+                                if (imageBitmap != null) {
+                                    Image(bitmap = imageBitmap, contentDescription = person.name)
+                                } else {
+                                    Text(text = person.name, fontSize = 45.sp)
+                                }
                             }
                         }
                     }
