@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -73,13 +74,23 @@ class PersonSelector : ComponentActivity() {
                     val showDialog = remember { mutableStateOf(false) }
                     Button(
                         onClick = {
+                            passcode.value = ""
+                            if (passcode.value == "admin") {
+                                for (person in Persons.persons) {
+                                    if (Persons.unlockedPersons.contains(person))
+                                        continue
+                                    Persons.unlockedPersons.add(person)
+                                    Log.d("SoundBoardz", "Unlocked ${person.name}")
+                                }
+                                PersonHandler.savePersonen(context)
+                                return@Button
+                            }
                             val unlocked = persons.firstOrNull { it.passcode == passcode.value }
                             if (unlocked != null) {
                                 if (Persons.unlockedPersons.contains(unlocked))
                                     return@Button
-                                Persons.unlockedPersons.add(unlocked)
-                                passcode.value = ""
                                 Log.d("SoundBoardz", "Unlocked ${unlocked.name}")
+                                Persons.unlockedPersons.add(unlocked)
                                 PersonHandler.savePersonen(context)
                             } else {
                                 showDialog.value = true
@@ -87,9 +98,9 @@ class PersonSelector : ComponentActivity() {
                             }
                         }, modifier = Modifier
                             .background(Color.Green)
-                            .fillMaxWidth()
+                            .width(100.dp)
                     ) {
-                        Text(text = "Unlock", color = Colors.indigo)
+                        Text(text = "Unlock")
                     }
                     if (showDialog.value) {
                         AlertDialog(
@@ -107,7 +118,7 @@ class PersonSelector : ComponentActivity() {
             }
 
             Column {
-                Text("Unlocked persons:")
+                Text(text = "Unlocked persons:", fontSize = 25.sp)
                 LazyColumn(
                     contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
                 ) {
