@@ -10,35 +10,15 @@
 
 package de.carinaschoppe.soundboardz
 
+import android.content.Context
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import java.io.IOException
 
 object Persons {
 
 
-    val persons = mutableSetOf(
-        Person(
-            "Silvi", mutableSetOf(
-                AudioButton("Bodenlos", "bodenlos.wav"),
-                AudioButton("Gottlos", "gottlos.wav"),
-                AudioButton("Bruda", "bruda.wav")
-            ),
-            "jg54j"
-        ),
-        Person(
-            "Paul",
-            mutableSetOf(
-                AudioButton("Ehre", "ehre.wav"),
-                AudioButton("Erste Sahne", "erste-sahne.wav")
-            ),
-            "j85g"
-        ),
-        Person(
-            "Carina", mutableSetOf(),
-            "4j3g23g"
-        )
-    )
+    val persons = mutableSetOf<Person>()
 
     //create example of random strings and persons
     val currentPerson = mutableStateOf<Person?>(null)
@@ -46,4 +26,39 @@ object Persons {
     val unlockedPersons = mutableStateListOf<Person>()
 
 
+    fun getPersonsFromFile(context: Context) {
+
+        val lines = mutableListOf<String>()
+        try {
+            val inputStream = context.assets.open("persons.csv")
+            inputStream.bufferedReader().useLines { data ->
+                data.forEach {
+                    lines.add(it)
+                }
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+
+        //iterate over the lines beginning at the second line
+        for (line in lines.subList(1, lines.size)) {
+            val values = line.split(",")
+            val name = values[0]
+            //passcode is the last element
+            val passcode = values[values.size - 1]
+            //audiobuttons are from the second element to the last element
+            val audioButtonsText = values.subList(1, values.size - 1)
+            val audioButtons = mutableSetOf<AudioButton>()
+            for (audioButtonText in audioButtonsText) {
+                val buttonName = audioButtonText.substringBefore(";")
+                val buttonPath = audioButtonText.substringAfter(";")
+                val audioButton = AudioButton(buttonName, buttonPath)
+                audioButtons.add(audioButton)
+            }
+            val person = Person(name, audioButtons, passcode)
+            persons.add(person)
+        }
+
+    }
 }
+
