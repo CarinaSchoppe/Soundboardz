@@ -56,7 +56,7 @@ class PersonUI : ComponentActivity() {
                 .verticalScroll(rememberScrollState())
         ) {
             for ((index, audioFile) in person.audioButtons.withIndex()) {
-                val backgroundColor = Colors.colors.shuffled()[index % Colors.colors.size]
+                val backgroundColor = Colors.colors[index % Colors.colors.size]
 
                 BoxWithConstraints(
                     modifier = Modifier

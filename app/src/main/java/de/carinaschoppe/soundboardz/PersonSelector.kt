@@ -43,7 +43,7 @@ class PersonSelector : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
                     PersonHandler.loadPersonen(this)
-                    personenScroller(this)
+                    personScroller(this)
                 }
             }
         }
@@ -52,7 +52,7 @@ class PersonSelector : ComponentActivity() {
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    private fun personenScroller(context: Context) {
+    private fun personScroller(context: Context) {
         val passcode = remember { mutableStateOf("") }
         val persons = Persons.persons.toList()
         Column {
@@ -85,7 +85,9 @@ class PersonSelector : ComponentActivity() {
                                 showDialog.value = true
                                 Log.d("SoundBoardz", "Wrong passcode: ${passcode.value}")
                             }
-                        }, modifier = Modifier.background(Color.Green)
+                        }, modifier = Modifier
+                            .background(Color.Green)
+                            .fillMaxWidth()
                     ) {
                         Text(text = "Unlock", color = Colors.indigo)
                     }
@@ -111,7 +113,7 @@ class PersonSelector : ComponentActivity() {
                 ) {
                     items(Persons.unlockedPersons.size) { index ->
                         val person = Persons.unlockedPersons.elementAt(index)
-                        val backgroundColor = Colors.colors.shuffled()[index % Colors.colors.size]
+                        val backgroundColor = Colors.colors[index % Colors.colors.size]
                         BoxWithConstraints(
                             modifier = Modifier
                                 .fillMaxWidth()
