@@ -7,13 +7,16 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.AlertDialog
@@ -29,6 +32,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import de.carinaschoppe.soundboardz.ui.theme.SoundboardzTheme
 
 class MainWindow : ComponentActivity() {
@@ -71,7 +75,9 @@ class MainWindow : ComponentActivity() {
                     Button(
                         onClick = {
                             val unlocked = persons.firstOrNull { it.passcode == passcode.value }
-                            if (unlocked != null && !unlockedPersons.contains(unlocked)) {
+                            if (unlocked != null) {
+                                if (unlockedPersons.contains(unlocked))
+                                    return@Button
                                 Util.unlockedPersons.add(unlocked)
                                 unlockedPersons.add(unlocked)
                                 passcode.value = ""
@@ -108,17 +114,24 @@ class MainWindow : ComponentActivity() {
                     items(Util.unlockedPersons.size) { index ->
                         val person = Util.unlockedPersons.elementAt(index)
                         val backgroundColor = Colors.colors[index % Colors.colors.size]
-                        Button(
-                            onClick = {
-                                val intent = Intent(this@MainWindow, PersonUI::class.java)
-                                Util.currentPerson = person
-                                startActivity(intent)
-                            },
+                        BoxWithConstraints(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .background(color = backgroundColor),
+                                .heightIn(max = 450.dp)
                         ) {
-                            Text(text = person.name)
+                            Button(
+                                onClick = {
+                                    val intent = Intent(this@MainWindow, PersonUI::class.java)
+                                    Util.currentPerson = person
+                                    startActivity(intent)
+                                },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .fillMaxHeight()
+                                    .background(backgroundColor)
+                            ) {
+                                Text(text = person.name, fontSize = 30.sp, color = Colors.indigo)
+                            }
                         }
                     }
                 }
