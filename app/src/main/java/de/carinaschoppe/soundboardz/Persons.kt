@@ -55,7 +55,7 @@ object Persons {
                 val audioButton = AudioButton(buttonName, buttonPath)
                 audioButtons.add(audioButton)
             }
-            val person = Person(name, audioButtons, passcode)
+            val person = Person(name, audioButtons.shuffled().toMutableSet(), passcode)
             persons.add(person)
         }
 
