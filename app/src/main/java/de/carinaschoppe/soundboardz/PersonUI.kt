@@ -36,7 +36,7 @@ class PersonUI : ComponentActivity() {
             SoundboardzTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                    createPerson(person = Persons.currentPerson)
+                    createPerson(person = Persons.currentPerson.value!!)
                 }
             }
         }

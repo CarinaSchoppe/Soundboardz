@@ -133,7 +133,7 @@ class PersonSelector : ComponentActivity() {
                             Button(
                                 onClick = {
                                     val intent = Intent(this@PersonSelector, PersonUI::class.java)
-                                    Persons.currentPerson = person
+                                    Persons.currentPerson.value = person
                                     startActivity(intent)
                                 },
                                 modifier = Modifier
