@@ -1,15 +1,21 @@
 package de.carinaschoppe.soundboardz
 
+import android.content.Context
 import java.io.File
 
 object PersonenHandler {
 
 
-    fun loadPersonen() {
-        val file = File("personen.txt")
+    fun loadPersonen(context: Context) {
+        val file: File = try {
+            File(context.filesDir, "personen.txt")
+        } catch (e: Exception) {
+            return
+        }
         if (!file.exists()) {
             return
         }
+        val personen = mutableSetOf<Person>()
         val lines = file.readLines()
         for (line in lines) {
             //check if the line is a person
@@ -20,16 +26,19 @@ object PersonenHandler {
                 //find the person in personen that  matches
                 val person = Util.persons.find { it.name == name && it.passcode == passcode }
                 if (person != null) {
-                    Util.unlockedPersons.add(person)
+                    personen.add(person)
                 }
 
             }
         }
 
+        Util.unlockedPersons.addAll(personen)
+
+
     }
 
-    fun savePersonen() {
-        val file = File("personen.txt")
+    fun savePersonen(context: Context) {
+        val file = File(context.filesDir, "personen.txt")
         file.writeText("")
         for (person in Util.unlockedPersons) {
             file.appendText("Person:${person.name}Passcode:${person.passcode}")

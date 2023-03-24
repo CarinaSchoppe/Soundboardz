@@ -1,8 +1,9 @@
 package de.carinaschoppe.soundboardz
 
-import android.content.Context
+import android.media.AudioManager
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -18,7 +19,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import de.carinaschoppe.soundboardz.ui.theme.SoundboardzTheme
 
 
@@ -31,8 +31,7 @@ class PersonUI : ComponentActivity() {
             SoundboardzTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                    createPerson(person = Util.currentPerson, context = this)
-
+                    createPerson(person = Util.currentPerson)
                 }
             }
         }
@@ -40,10 +39,12 @@ class PersonUI : ComponentActivity() {
 
 
     @Composable
-   private fun createPerson(person: Person, context: Context) {
+    private fun createPerson(person: Person) {
         //add a scrollable list of the buttons in different colors
         //add a button to add a new button
-        val mediaPlayer = remember { MediaPlayer() }
+        var mediaPlayer = remember {
+            MediaPlayer()
+        }
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -55,8 +56,18 @@ class PersonUI : ComponentActivity() {
                     onClick = {
                         mediaPlayer.stop()
                         mediaPlayer.reset()
-                        val fd = context.assets.openFd(audioFile.audioFile)
-                        mediaPlayer.setDataSource(fd.fileDescriptor, fd.startOffset, fd.length)
+                        Log.d("Soundboardz Audio", "Playing audio file: ${audioFile.audioFile}")
+                        val assetFileDescriptor = assets.openFd("${person.name.lowercase()}/${audioFile.audioFile}")
+                        Log.d("Soundboardz Audio", "File descriptor: ${assetFileDescriptor}")
+                        mediaPlayer.setVolume(3.0f, 3.0f)
+
+// Set the audio stream to the media stream to play the audio through the loud speaker
+                        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC)
+                        mediaPlayer.setDataSource(
+                            assetFileDescriptor.fileDescriptor,
+                            assetFileDescriptor.startOffset,
+                            assetFileDescriptor.length
+                        )
                         mediaPlayer.prepare()
                         mediaPlayer.start()
                     },
