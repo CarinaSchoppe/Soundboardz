@@ -74,7 +74,6 @@ class PersonSelector : ComponentActivity() {
                     val showDialog = remember { mutableStateOf(false) }
                     Button(
                         onClick = {
-                            passcode.value = ""
                             if (passcode.value == "admin") {
                                 for (person in Persons.persons) {
                                     if (Persons.unlockedPersons.contains(person))
@@ -82,20 +81,21 @@ class PersonSelector : ComponentActivity() {
                                     Persons.unlockedPersons.add(person)
                                     Log.d("SoundBoardz", "Unlocked ${person.name}")
                                 }
-                                PersonHandler.savePersonen(context)
                                 return@Button
-                            }
-                            val unlocked = persons.firstOrNull { it.passcode == passcode.value }
-                            if (unlocked != null) {
-                                if (Persons.unlockedPersons.contains(unlocked))
-                                    return@Button
-                                Log.d("SoundBoardz", "Unlocked ${unlocked.name}")
-                                Persons.unlockedPersons.add(unlocked)
-                                PersonHandler.savePersonen(context)
                             } else {
-                                showDialog.value = true
-                                Log.d("SoundBoardz", "Wrong passcode: ${passcode.value}")
+                                val unlocked = persons.firstOrNull { it.passcode == passcode.value }
+                                if (unlocked != null) {
+                                    if (Persons.unlockedPersons.contains(unlocked))
+                                        return@Button
+                                    Log.d("SoundBoardz", "Unlocked ${unlocked.name}")
+                                    Persons.unlockedPersons.add(unlocked)
+                                } else {
+                                    showDialog.value = true
+                                    Log.d("SoundBoardz", "Wrong passcode: ${passcode.value}")
+                                }
                             }
+                            PersonHandler.savePersonen(context)
+                            passcode.value = ""
                         }, modifier = Modifier
                             .background(Color.Green)
                             .width(100.dp)
