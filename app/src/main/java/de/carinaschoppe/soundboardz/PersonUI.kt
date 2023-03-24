@@ -36,7 +36,7 @@ class PersonUI : ComponentActivity() {
             SoundboardzTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                    createPerson(person = Util.currentPerson)
+                    createPerson(person = Persons.currentPerson)
                 }
             }
         }
@@ -56,7 +56,7 @@ class PersonUI : ComponentActivity() {
                 .verticalScroll(rememberScrollState())
         ) {
             for ((index, audioFile) in person.audioButtons.withIndex()) {
-                val backgroundColor = Colors.colors[index % Colors.colors.size]
+                val backgroundColor = Colors.colors.shuffled()[index % Colors.colors.size]
 
                 BoxWithConstraints(
                     modifier = Modifier
@@ -93,7 +93,7 @@ class PersonUI : ComponentActivity() {
                             .background(backgroundColor)
 
                     ) {
-                        Text(text = audioFile.buttonText, fontSize = 30.sp)
+                        Text(text = audioFile.buttonText, fontSize = 40.sp)
                     }
                 }
             }

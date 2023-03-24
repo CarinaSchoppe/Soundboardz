@@ -3,7 +3,7 @@ package de.carinaschoppe.soundboardz
 import android.content.Context
 import java.io.File
 
-object PersonenHandler {
+object PersonHandler {
 
 
     fun loadPersonen(context: Context) {
@@ -15,7 +15,7 @@ object PersonenHandler {
         if (!file.exists()) {
             return
         }
-        val personen = mutableSetOf<Person>()
+        val persons = mutableSetOf<Person>()
         val lines = file.readLines()
         for (line in lines) {
             //check if the line is a person
@@ -24,15 +24,15 @@ object PersonenHandler {
                 val name = line.substringAfter("Person:").substringBefore("Passcode:")
                 val passcode = line.substringAfter("Passcode:")
                 //find the person in personen that  matches
-                val person = Util.persons.find { it.name == name && it.passcode == passcode }
+                val person = Persons.persons.find { it.name == name && it.passcode == passcode }
                 if (person != null) {
-                    personen.add(person)
+                    persons.add(person)
                 }
 
             }
         }
 
-        Util.unlockedPersons.addAll(personen)
+        Persons.unlockedPersons.addAll(persons)
 
 
     }
@@ -40,7 +40,7 @@ object PersonenHandler {
     fun savePersonen(context: Context) {
         val file = File(context.filesDir, "personen.txt")
         file.writeText("")
-        for (person in Util.unlockedPersons) {
+        for (person in Persons.unlockedPersons) {
             file.appendText("Person:${person.name}Passcode:${person.passcode}")
         }
     }

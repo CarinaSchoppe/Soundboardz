@@ -35,14 +35,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import de.carinaschoppe.soundboardz.ui.theme.SoundboardzTheme
 
-class MainWindow : ComponentActivity() {
+class PersonSelector : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             SoundboardzTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                    PersonenHandler.loadPersonen(this)
+                    PersonHandler.loadPersonen(this)
                     personenScroller(this)
                 }
             }
@@ -54,8 +54,7 @@ class MainWindow : ComponentActivity() {
     @Composable
     private fun personenScroller(context: Context) {
         val passcode = remember { mutableStateOf("") }
-        val persons = Util.persons.toList()
-        val unlockedPersons = Util.unlockedPersons.toMutableList()
+        val persons = Persons.persons.toList()
         Column {
             Column {
                 Row(
@@ -76,13 +75,12 @@ class MainWindow : ComponentActivity() {
                         onClick = {
                             val unlocked = persons.firstOrNull { it.passcode == passcode.value }
                             if (unlocked != null) {
-                                if (unlockedPersons.contains(unlocked))
+                                if (Persons.unlockedPersons.contains(unlocked))
                                     return@Button
-                                Util.unlockedPersons.add(unlocked)
-                                unlockedPersons.add(unlocked)
+                                Persons.unlockedPersons.add(unlocked)
                                 passcode.value = ""
                                 Log.d("SoundBoardz", "Unlocked ${unlocked.name}")
-                                PersonenHandler.savePersonen(context)
+                                PersonHandler.savePersonen(context)
                             } else {
                                 showDialog.value = true
                                 Log.d("SoundBoardz", "Wrong passcode: ${passcode.value}")
@@ -111,9 +109,9 @@ class MainWindow : ComponentActivity() {
                 LazyColumn(
                     contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
                 ) {
-                    items(Util.unlockedPersons.size) { index ->
-                        val person = Util.unlockedPersons.elementAt(index)
-                        val backgroundColor = Colors.colors[index % Colors.colors.size]
+                    items(Persons.unlockedPersons.size) { index ->
+                        val person = Persons.unlockedPersons.elementAt(index)
+                        val backgroundColor = Colors.colors.shuffled()[index % Colors.colors.size]
                         BoxWithConstraints(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -121,8 +119,8 @@ class MainWindow : ComponentActivity() {
                         ) {
                             Button(
                                 onClick = {
-                                    val intent = Intent(this@MainWindow, PersonUI::class.java)
-                                    Util.currentPerson = person
+                                    val intent = Intent(this@PersonSelector, PersonUI::class.java)
+                                    Persons.currentPerson = person
                                     startActivity(intent)
                                 },
                                 modifier = Modifier
@@ -130,7 +128,7 @@ class MainWindow : ComponentActivity() {
                                     .fillMaxHeight()
                                     .background(backgroundColor)
                             ) {
-                                Text(text = person.name, fontSize = 30.sp, color = Colors.indigo)
+                                Text(text = person.name, fontSize = 45.sp)
                             }
                         }
                     }

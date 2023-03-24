@@ -1,5 +1,7 @@
 package de.carinaschoppe.soundboardz
 
-data class Person(val name: String,
-                  val audioButtons: MutableList<AudioButton>,
-                  val passcode: String)
+data class Person(
+    val name: String,
+    val audioButtons: MutableSet<AudioButton>,
+    val passcode: String
+)
