@@ -85,6 +85,8 @@ class PersonSelector : ComponentActivity() {
                     )
                     val showDialog = remember { mutableStateOf(false) }
                     val delete = remember { mutableStateOf(false) }
+                    val added = remember { mutableStateOf(false) }
+                    val personName = remember { mutableStateOf("") }
                     Button(
                         onClick = {
                             if (passcode.value == "admin") {
@@ -107,6 +109,8 @@ class PersonSelector : ComponentActivity() {
                                         return@Button
                                     Log.d("SoundBoardz", "Unlocked ${unlocked.name}")
                                     Persons.unlockedPersons.add(unlocked)
+                                    added.value = true
+                                    personName.value = unlocked.name
                                 } else {
                                     showDialog.value = true
                                     Log.d("SoundBoardz", "Wrong passcode: ${passcode.value}")
@@ -131,12 +135,23 @@ class PersonSelector : ComponentActivity() {
                             }
                         )
                     }
-                    if (showDialog.value) {
+                    if (added.value) {
                         AlertDialog(
-                            onDismissRequest = { showDialog.value = false },
+                            onDismissRequest = { added.value = false },
+                            title = { Text("Person added: ${personName.value}") },
+                            confirmButton = {
+                                Button(onClick = { added.value = false }) {
+                                    Text("Okay")
+                                }
+                            }
+                        )
+                    }
+                    if (delete.value) {
+                        AlertDialog(
+                            onDismissRequest = { delete.value = false },
                             title = { Text("Alles gelöscht") },
                             confirmButton = {
-                                Button(onClick = { showDialog.value = false }) {
+                                Button(onClick = { delete.value = false }) {
                                     Text("Okay")
                                 }
                             }

@@ -46,7 +46,8 @@ object PersonHandler {
             }
         }
 
-        Persons.unlockedPersons.addAll(persons)
+
+        Persons.unlockedPersons.addAll(persons.shuffled())
 
 
     }
