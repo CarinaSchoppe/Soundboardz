@@ -84,6 +84,7 @@ class PersonSelector : ComponentActivity() {
                             .background(Color.White)
                     )
                     val showDialog = remember { mutableStateOf(false) }
+                    val delete = remember { mutableStateOf(false) }
                     Button(
                         onClick = {
                             if (passcode.value == "admin") {
@@ -97,7 +98,8 @@ class PersonSelector : ComponentActivity() {
                                 //delete the persons.txt file
                                 PersonHandler.deletePersons(context)
                                 Log.d("SoundBoardz", "Deleted persons.txt")
-                                return@Button
+                                delete.value = true
+                                Persons.unlockedPersons.clear()
                             } else {
                                 val unlocked = persons.firstOrNull { it.passcode == passcode.value }
                                 if (unlocked != null) {
@@ -122,6 +124,17 @@ class PersonSelector : ComponentActivity() {
                         AlertDialog(
                             onDismissRequest = { showDialog.value = false },
                             title = { Text("Wrong code") },
+                            confirmButton = {
+                                Button(onClick = { showDialog.value = false }) {
+                                    Text("Okay")
+                                }
+                            }
+                        )
+                    }
+                    if (showDialog.value) {
+                        AlertDialog(
+                            onDismissRequest = { showDialog.value = false },
+                            title = { Text("Alles gelöscht") },
                             confirmButton = {
                                 Button(onClick = { showDialog.value = false }) {
                                     Text("Okay")
