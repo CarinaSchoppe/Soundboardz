@@ -26,6 +26,11 @@ object PersonHandler {
             return
         }
 
+        if (!file.exists()) {
+            Log.d("Soundboardz Load", "Loaded Line: file does not exist")
+            return
+        }
+
 
         val persons = mutableSetOf<Person>()
         val lines = file.readLines()
