@@ -30,8 +30,6 @@ object Colors {
     val orange = Color(0xFFFF9800)
     val deepOrange = Color(0xFFFF5722)
     val brown = Color(0xFF795548)
-    val grey = Color(0xFF9E9E9E)
-    val blueGrey = Color(0xFF607D8B)
 
-    val colors = listOf(red, pink, purple, deepPurple, indigo, blue, lightBlue, cyan, teal, green, lightGreen, lime, yellow, amber, orange, deepOrange, brown, grey, blueGrey).shuffled()
+    val colors = listOf(red, pink, purple, deepPurple, indigo, blue, lightBlue, cyan, teal, green, lightGreen, lime, yellow, amber, orange, deepOrange, brown).shuffled()
 }
